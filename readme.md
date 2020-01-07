@@ -57,3 +57,87 @@ CONTAINER ID        IMAGE               COMMAND              CREATED            
 a81466552c7b        httpd:2.2           "httpd-foreground"   16 seconds ago      Up 14 seconds       0.0.0.0:32771->80/tcp   distracted_jackson
 [toor@localhost root]$         
 -----------------------------
+
+
+redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ../data/redis:/data
+    restart: always
+	
+------------------------------
+
+app.py
+	
+import redis
+import time
+
+time.sleep(5)
+
+r = redis.StrictRedis(host='db', port=6379, db=0)
+
+r.set('test', 'working')
+
+i = r.get('test')
+o = i.decode("utf-8")
+
+print(o)
+
+
+from flask import Flask, request, render_template
+app = Flask(__name__)
+
+@app.route('/')
+@app.route('/index')
+def index():
+    return render_template('index.html',
+                           title='Home')
+
+@app.route('/add', methods=['POST', 'GET'])
+def add():
+    if request.method == 'POST':
+        r.set(request.form['key'], request.form['value'])
+
+    return 'Successfully added key ' + request.form['key']
+
+@app.route('/get', methods=['POST'])
+def get():
+    try:
+        if request.method == 'POST':
+            keyBytes = r.get(request.form['key'])
+            key = keyBytes.decode('utf-8')
+        return 'You asked about key ' + request.form['key'] + ". Value : " + key
+    except:
+        return 'Key ' + request.form['key'] + " does not exist."
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
+
+---------------------------------------------
+
+version: “3”
+services:
+web:
+image: nginx
+volumes:
+- /opt/nginx:/etc/nginx
+- /opt/nginx/conf.d:/etc/nginx/conf.d
+- /opt/www:/opt/www
+deploy:
+replicas: 2
+restart_policy:
+condition: on-failure
+ports:
+- “80:80”
+- “443:443”
+networks:
+- webnet
+networks:
+webnet:
+Please give me some advice, thank you very much.
+
+---------------------------------------------------
