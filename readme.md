@@ -29,4 +29,5 @@
     
 - utiliser un socket TCP (port TCP) à la place
 	-  autrement dit, il faut que votre démon Docker écoute sur un IP:PORT plutôt que sur le path d'un socket UNIX local
+
 `: dockerd -H tcp://192.168.202.3`
