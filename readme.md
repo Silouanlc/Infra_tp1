@@ -20,10 +20,13 @@
 `COPY index.html .`
 `CMD ["python3", "-m", "http.server", "8888"]`
 
-
 ## 3
 🌞 Modifier la configuration du démon Docker :
 
 -   modifier le socket utilisé pour la communication avec le démon Docker
     -   trouvez le path du socket UNIX utilisé par défaut (c'est un fichier `docker.sock`)
     :`/var/run/docker.sock` 
+    
+- utiliser un socket TCP (port TCP) à la place
+	-  autrement dit, il faut que votre démon Docker écoute sur un IP:PORT plutôt que sur le path d'un socket UNIX local
+`: dockerd -H tcp://192.168.202.3`
