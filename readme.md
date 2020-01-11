@@ -47,8 +47,11 @@
 ` node:`
 
 ` build: .`
+
 ` restart: on-failure`
+
 ` ports:`
+
 ` - "8888:8888"`
 
 
