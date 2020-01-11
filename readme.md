@@ -32,6 +32,7 @@
 
 `: dockerd -H tcp://192.168.202.3`
 
+
 ## Write your own
 
 🌞 Ecrire un `docker-compose-v1.yml` qui permet de :
@@ -40,18 +41,12 @@
 -   partage le port TCP du conteneur sur l'hôte
 -   faire en sorte que le conteneur soit build automatiquement si ce n'est pas fait
 
-`version: '3.7`
-
+> `version: '3.7`
 `services:`
-
 ` node:`
-
 ` build: .`
-
 ` restart: on-failure`
-
 ` ports:`
-
 ` - "8888:8888"`
 
 
