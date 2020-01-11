@@ -31,3 +31,24 @@
 	-  autrement dit, il faut que votre démon Docker écoute sur un IP:PORT plutôt que sur le path d'un socket UNIX local
 
 `: dockerd -H tcp://192.168.202.3`
+
+
+3
+
+## Write your own
+
+🌞 Ecrire un `docker-compose-v1.yml` qui permet de :
+
+-   lancer votre image de serveur web Python créée en [2.](#cr%c3%a9ation-dimage)
+-   partage le port TCP du conteneur sur l'hôte
+-   faire en sorte que le conteneur soit build automatiquement si ce n'est pas fait
+`version: '3.7`
+`services:`
+` node:`
+` build: .`
+` restart: on-failure`
+` ports:`
+` - "8888:8888"`
+
+
+
