@@ -10,7 +10,7 @@
     -   lancer la commande `python3 -m http.server 8888` (clause `CMD`)
         -   cela lance un serveur web qui écoute sur le port TCP 8888 de toutes les interfaces du conteneur
   
-
+~~~~
 `[root@localhost l2]# cat Dockerfile`
 `FROM alpine:latest`
 `COPY . /app`
@@ -19,6 +19,7 @@
 `Expose 8888`
 `COPY index.html .`
 `CMD ["python3", "-m", "http.server", "8888"]`
+~~~~
 
 ## 3
 🌞 Modifier la configuration du démon Docker :
@@ -29,9 +30,9 @@
     
 - utiliser un socket TCP (port TCP) à la place
 	-  autrement dit, il faut que votre démon Docker écoute sur un IP:PORT plutôt que sur le path d'un socket UNIX local
-
+~~~~
 `: dockerd -H tcp://192.168.202.3`
-
+~~~~
 
 ## Write your own
 
