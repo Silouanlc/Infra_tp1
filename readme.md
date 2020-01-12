@@ -51,3 +51,70 @@
      - "8888:8888"
 
 ~~~~
+
+##Conteneuriser une application donnée
+
+Dockerfile:
+~~~~
+
+FROM alpine:latest
+
+RUN apk add py-pip && apk add python3
+
+WORKDIR /app
+
+RUN pip install -r requirements
+
+ENTRYPOINT [ "python" ]
+
+CMD ["app.py"]
+~~~~
+
+
+~~~~
+
+version: '3.7'
+
+services:
+  web:
+    build: ./webserver/
+    networks:
+      internal:
+        aliases:
+          - python-app
+    depends_on:
+      - redis
+      
+  redis:
+    image: redis
+    networks:
+      internal:
+        aliases:
+          - db
+    expose:
+      - "6379"
+      
+  nginx:
+    image: nginx
+    networks:
+      - internal
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/certs
+    depends_on:
+      - web
+      - redis
+    ports:
+      - "443:443"
+
+
+
+networks:
+  internal:
+
+~~~~
+
+
+
+
+
