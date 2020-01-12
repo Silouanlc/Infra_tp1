@@ -54,70 +54,29 @@
 
 ##Conteneuriser une application donnée
 
-Ici on se rapproche d'un cas d'utilisation réel : je vous mets une application sur les bras et vous devez la conteneuriser.
-L'application :
-
-codée en python3
-
-les sources sont dans ici
-n'hésitez pas à cloner mon repo pour copier directement les fichiers
 
 
-nécessite des librairies installables avec pip
-
-pip install -r <FICHIER>
-
-
-a besoin d'un Redis pour fonctionner
-
-il doit être joignable sur le nom db (port par défaut (6379/TCP))
-
-
-
-🌞 Vous devez :
-
-construire une image qui
-
-contient python3
-
-contient l'application et ses dépendances
-lance l'application au démarrage du conteneur
-
-
-écrire un docker-compose.yml
-
-contient l'application
-contient un Redis
-
-utilise l'image de library
-
-a un alias db
-
-
-
-contient un NGINX
-
-reverse proxy HTTPS vers l'application Web
-a son port 443 exposé
-
-
-Dockerfile:
+Dockerfile ( dans le webserver) :
 ~~~~
-
 FROM alpine:latest
 
-RUN apk add py-pip && apk add python3
+RUN apk update && apk add python3 && apk add py-pip
+
+COPY ./app/requirements /app/requirements
 
 WORKDIR /app
 
 RUN pip install -r requirements
 
+COPY ./pythonapp /pythonapp
+
 ENTRYPOINT [ "python" ]
 
 CMD ["app.py"]
+
 ~~~~
 
-docker-compose.yml:
+docker-compose.yml (à la racine):
 ~~~~
 
 version: '3.7'
