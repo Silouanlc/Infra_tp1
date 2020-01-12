@@ -60,7 +60,7 @@ Dockerfile ( dans le webserver) :
 ~~~~
 FROM alpine:latest
 
-RUN apk update && apk add python3 && apk add py-pip
+RUN apk add python3 && apk add py-pip
 
 COPY ./app/requirements /app/requirements
 
